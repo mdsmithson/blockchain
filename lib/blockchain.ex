@@ -168,7 +168,7 @@ defmodule Blockchain do
     ]
     end)
   end
-  def genesisBlock(signature,owner) do
+  def genesis(signature,owner) do
     timestamp = Time.to_string(Time.utc_now)
     addBlock(0,signature,"Genesis block " <> timestamp,0,calculateHash(signature,timestamp,"0"),owner)
   end
@@ -186,7 +186,6 @@ end
 defmodule PrivateKey do
   defmodule Base58 do
     @alphabet '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
-
     def encode(data, hash \\ "")
 
     def encode(data, hash) when is_binary(data) do
@@ -265,7 +264,7 @@ defmodule Test do
   @spec start :: none()
   def start do
     Blockchain.start
-    Blockchain.genesisBlock("Test Coin 2021",Blockchain.Wallet.address)
+    Blockchain.genesis("Test Coin 2021",Blockchain.Wallet.address)
     Blockchain.mine
     Blockchain.all
     IO.puts "Wallet balance: " <> to_string(Blockchain.Wallet.balance)
