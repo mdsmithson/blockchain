@@ -134,10 +134,10 @@ defmodule Blockchain do
   def pendingTransactions do
     Agent.get(__MODULE__.PendingTransactions,fn x -> x end)
   end
-  def pendingTransactions(:clear) do
+  defp pendingTransactions(:clear) do
     Agent.update(__MODULE__.PendingTransactions,fn _ -> [] end)
   end
-  def calculateHash(previousHash,data,nonce), do: :crypto.hmac(:sha256,previousHash,data <> nonce) |> Base.encode16
+  def calculateHash(previousHash,data,nonce), do: :crypto.hash(:sha256,previousHash <> data <> nonce) |> Base.encode16
   def all, do: Agent.get(__MODULE__,&(&1))
   def last, do: all() |> List.last
   defp addBlock(index,previousHash,data,nonce,new,owner) do
